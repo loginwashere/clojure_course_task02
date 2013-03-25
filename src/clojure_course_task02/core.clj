@@ -1,10 +1,15 @@
 (ns clojure-course-task02.core
+  (:import java.io.File)
   (:gen-class))
-
 
 (defn find-files [file-name path]
   "TODO: Implement searching for a file using his name as a regexp."
-  nil)
+  (filter
+    #(not
+      (empty?
+        (re-find
+          (re-pattern file-name) %)))
+      (map #(. % getName) (file-seq (clojure.java.io/file path)))))
 
 (defn usage []
   (println "Usage: $ run.sh file_name path"))
