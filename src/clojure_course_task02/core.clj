@@ -17,11 +17,7 @@
     (pmap
       (fn [file]
         (future
-          (if
-            (not
-              (empty?
-                (re-find
-                  (re-pattern file-name) (.getName file))))
+          (if (re-find (re-pattern file-name) (.getName file))
             (sendFile files (.getName file)))))
       (file-seq (clojure.java.io/file path))))
   (await files)
