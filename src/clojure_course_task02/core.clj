@@ -24,6 +24,7 @@
                   (re-pattern file-name) (.getName file))))
             (sendFile files (.getName file)))))
       (file-seq (clojure.java.io/file path))))
+  (await files)
   (deref files))
 
 (defn usage []
