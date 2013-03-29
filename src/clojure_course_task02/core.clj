@@ -2,11 +2,10 @@
   (:import java.io.File)
   (:gen-class))
 
-(def files
-    (agent []))
-
 (defn find-files [file-name path]
   "TODO: Implement searching for a file using his name as a regexp."
+  (def files
+    (agent []))
   (doall
     (pmap
       (fn [file]
