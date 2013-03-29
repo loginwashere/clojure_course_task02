@@ -5,12 +5,6 @@
 (def files
     (agent []))
 
-(defn addFile [files file]
-    (vec (conj files file)))
-
-(defn sendFile [files file]
-    (send files addFile file))
-
 (defn find-files [file-name path]
   "TODO: Implement searching for a file using his name as a regexp."
   (doall
@@ -18,7 +12,7 @@
       (fn [file]
         (future
           (if (re-find (re-pattern file-name) (.getName file))
-            (sendFile files (.getName file)))))
+            (send files conj (.getName file)))))
       (file-seq (clojure.java.io/file path))))
   (await files)
   (deref files))
