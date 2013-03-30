@@ -4,16 +4,16 @@
 
 (defn find-files [file-name path]
   "TODO: Implement searching for a file using his name as a regexp."
-  (let [files (agent [])]
-    (doall
+  (let [files (agent [])
+        pattern (re-pattern file-name)]
+    (dorun
       (pmap
         (fn [file]
-          (future
-            (if (re-find (re-pattern file-name) (.getName file))
-              (send files conj (.getName file)))))
+          (when (re-find pattern (.getName file))
+            (send files conj (.getName file))))
         (file-seq (clojure.java.io/file path))))
     (await files)
-    (deref files)))
+    @files))
 
 (defn usage []
   (println "Usage: $ run.sh file_name path"))
